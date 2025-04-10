@@ -1,0 +1,716 @@
+<div id="glowscript" class="glowscript">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <link type="text/css" href="https://www.glowscript.org/css/redmond/2.1/jquery-ui.custom.css" rel="stylesheet" />
+    <link type="text/css" href="https://www.glowscript.org/css/ide.css" rel="stylesheet" />
+    <script type="text/javascript" src="https://www.glowscript.org/lib/jquery/2.1/jquery.min.js"></script>
+    <script type="text/javascript" src="https://www.glowscript.org/lib/jquery/2.1/jquery-ui.custom.min.js"></script>
+    <script type="text/javascript" src="https://www.glowscript.org/package/glow.3.2.min.js"></script>
+    <script type="text/javascript" src="https://www.glowscript.org/package/RSrun.3.2.min.js"></script>
+    <script type="text/javascript"><!--//--><![CDATA[//><!--
+    ;(function() {;
+    var ρσ_modules = {};
+    var running, initial_pos, acceleration, vM, vm, M, m, mu, move_step, rotate_step;
+    ρσ_modules.pythonize = {};
+    
+    (function(){
+        function strings() {
+            var string_funcs, exclude, name;
+            string_funcs = set("capitalize strip lstrip rstrip islower isupper isspace lower upper swapcase center count endswith startswith find rfind index rindex format join ljust rjust partition rpartition replace split rsplit splitlines zfill".split(" "));
+            if (!arguments.length) {
+                exclude = (function(){
+                    var s = ρσ_set();
+                    s.jsset.add("split");
+                    s.jsset.add("replace");
+                    return s;
+                })();
+            } else if (arguments[0]) {
+                exclude = Array.prototype.slice.call(arguments);
+            } else {
+                exclude = null;
+            }
+            if (exclude) {
+                string_funcs = string_funcs.difference(set(exclude));
+            }
+            var ρσ_Iter0 = string_funcs;
+            ρσ_Iter0 = ((typeof ρσ_Iter0[Symbol.iterator] === "function") ? (ρσ_Iter0 instanceof Map ? ρσ_Iter0.keys() : ρσ_Iter0) : Object.keys(ρσ_Iter0));
+            for (var ρσ_Index0 of ρσ_Iter0) {
+                name = ρσ_Index0;
+                (ρσ_expr_temp = String.prototype)[(typeof name === "number" && name < 0) ? ρσ_expr_temp.length + name : name] = (ρσ_expr_temp = ρσ_str.prototype)[(typeof name === "number" && name < 0) ? ρσ_expr_temp.length + name : name];
+            }
+        };
+        if (!strings.__module__) Object.defineProperties(strings, {
+            __module__ : {value: "pythonize"}
+        });
+    
+        ρσ_modules.pythonize.strings = strings;
+    })();
+    async function __main__() {
+    "use strict";
+        var display = canvas;
+        var scene = canvas();
+    
+        function round(num, n=0) {return Number(num.toFixed(n))}
+    
+        function input(arg) {
+            arg = arg || {}
+            if (arg.prompt !== undefined && arg.prompt != '') return prompt(arg.prompt)
+            else if (typeof arg === 'string') return prompt(arg)
+            else return prompt()
+        }
+    
+        var version, print, arange, __name__, type, ρσ_ls, v, rotation_center, move_step, rotate_step, scene, k, j, i, g, dt, M, m, mu, running, acceleration, vM, vm, ρσ_unpack, status_label, pause_button, pulley1, pulley2, env, bigbox, arc1, _GS_1, apparatus, arc2, initial_pos, line1, line2, line3, smallbox, bigbox_label, smallbox_label, bigbox_vel_label, smallbox_vel_label, force, friction;
+        version = ρσ_list_decorate([ "3.2", "glowscript" ]);
+        Array.prototype['+'] = function(r) {return this.concat(r)}
+        Array.prototype['*'] = function(r) {return __array_times_number(this, r)}
+        window.__GSlang = "vpython";
+        print = GSprint;
+        arange = range;
+        __name__ = "__main__";
+        type = pytype;
+        var strings = ρσ_modules.pythonize.strings;
+    
+        strings();
+        "3";
+        v = vector;
+        "4";
+        function ObjectGroup() {;
+        }
+        ObjectGroup.prototype.__init__ = async function __init__() {
+            var self = this;
+            var objects = ( 0 === arguments.length["-"](1) && arguments[arguments.length["-"](1)] !== null && typeof arguments[arguments.length["-"](1)] === "object" && arguments[arguments.length["-"](1)] [ρσ_kwargs_symbol] === true) ? undefined : arguments[0];
+            var origin = (arguments[1] === undefined || ( 1 === arguments.length["-"](1) && arguments[arguments.length["-"](1)] !== null && typeof arguments[arguments.length["-"](1)] === "object" && arguments[arguments.length["-"](1)] [ρσ_kwargs_symbol] === true)) ? __init__.__defaults__.origin : arguments[1];
+            var ρσ_kwargs_obj = arguments[arguments.length["-"](1)];
+            if (ρσ_kwargs_obj === null || typeof ρσ_kwargs_obj !== "object" || ρσ_kwargs_obj [ρσ_kwargs_symbol] !== true) ρσ_kwargs_obj = {};
+            if (Object.prototype.hasOwnProperty.call(ρσ_kwargs_obj, "origin")){
+                origin = ρσ_kwargs_obj.origin;
+            }
+            var ρσ_ls, obj;
+            "13";
+            if (ρσ_instanceof(objects, list)) {
+                "14";
+                self.objects = objects;
+                "15";
+            } else {
+                "16";
+                self.objects = list(objects);
+                "19";
+            }
+            if (origin === null && len(self.objects)[">"](0)) {
+                "20";
+                self._origin = vector(ρσ_getitem(self.objects, 0).pos);
+                "21";
+            } else {
+                "22";
+                self._origin = (origin) ? vector(origin) : vector(0, 0, 0);
+            }
+            "25";
+            self.offsets = ρσ_list_decorate([]);
+            "26";
+            var ρσ_Iter1 = self.objects;
+            ρσ_Iter1 = ((typeof ρσ_Iter1[Symbol.iterator] === "function") ? (ρσ_Iter1 instanceof Map ? ρσ_Iter1.keys() : ρσ_Iter1) : Object.keys(ρσ_Iter1));
+            for (var ρσ_Index1 of ρσ_Iter1) {
+                obj = ρσ_Index1;
+                "27";
+                self.offsets.append(vector(obj.pos)["-"](1["*"](self._origin)));
+            }
+        };
+        if (!ObjectGroup.prototype.__init__.__defaults__) Object.defineProperties(ObjectGroup.prototype.__init__, {
+            __defaults__ : {value: {origin:null}},
+            __handles_kwarg_interpolation__ : {value: true},
+            __argnames__ : {value: ["objects", "origin"]},
+            __module__ : {value: null}
+        });
+        ObjectGroup.__argnames__ = ObjectGroup.prototype.__init__.__argnames__;
+        ObjectGroup.__handles_kwarg_interpolation__ = ObjectGroup.prototype.__init__.__handles_kwarg_interpolation__;
+        ObjectGroup.prototype.getpos = async function getpos() {
+            var self = this;
+            "31";
+            return self._origin;
+        };
+        if (!ObjectGroup.prototype.getpos.__module__) Object.defineProperties(ObjectGroup.prototype.getpos, {
+            __module__ : {value: null}
+        });
+        ObjectGroup.prototype.setpos = async function setpos(new_pos) {
+            var self = this;
+            var ρσ_ls, ρσ_unpack, i, obj;
+            "41";
+            self._origin = vector(new_pos);
+            "44";
+            var ρσ_Iter2 = enumerate(self.objects);
+            ρσ_Iter2 = ((typeof ρσ_Iter2[Symbol.iterator] === "function") ? (ρσ_Iter2 instanceof Map ? ρσ_Iter2.keys() : ρσ_Iter2) : Object.keys(ρσ_Iter2));
+            for (var ρσ_Index2 of ρσ_Iter2) {
+                ρσ_unpack = ρσ_Index2;
+                i = ρσ_unpack[0];
+                obj = ρσ_unpack[1];
+                "45";
+                obj.pos = self._origin["+"](ρσ_getitem(self.offsets, i));
+            }
+        };
+        if (!ObjectGroup.prototype.setpos.__argnames__) Object.defineProperties(ObjectGroup.prototype.setpos, {
+            __argnames__ : {value: ["new_pos"]},
+            __module__ : {value: null}
+        });
+        ObjectGroup.prototype.add = async function add(obj) {
+            var self = this;
+            "49";
+            self.objects.append(obj);
+            "50";
+            self.offsets.append(vector(obj.pos)["-"](1["*"](self._origin)));
+        };
+        if (!ObjectGroup.prototype.add.__argnames__) Object.defineProperties(ObjectGroup.prototype.add, {
+            __argnames__ : {value: ["obj"]},
+            __module__ : {value: null}
+        });
+        ObjectGroup.prototype.remove = async function remove(obj) {
+            var self = this;
+            var ρσ_ls, idx;
+            "54";
+            if (ρσ_in(obj, self.objects)) {
+                "55";
+                idx = self.objects.index(obj);
+                "56";
+                self.objects.pypop(idx);
+                "57";
+                self.offsets.pypop(idx);
+            }
+        };
+        if (!ObjectGroup.prototype.remove.__argnames__) Object.defineProperties(ObjectGroup.prototype.remove, {
+            __argnames__ : {value: ["obj"]},
+            __module__ : {value: null}
+        });
+        ObjectGroup.prototype.rotate = async function rotate() {
+            var self = this;
+            var angle = ( 0 === arguments.length["-"](1) && arguments[arguments.length["-"](1)] !== null && typeof arguments[arguments.length["-"](1)] === "object" && arguments[arguments.length["-"](1)] [ρσ_kwargs_symbol] === true) ? undefined : arguments[0];
+            var axis = (arguments[1] === undefined || ( 1 === arguments.length["-"](1) && arguments[arguments.length["-"](1)] !== null && typeof arguments[arguments.length["-"](1)] === "object" && arguments[arguments.length["-"](1)] [ρσ_kwargs_symbol] === true)) ? rotate.__defaults__.axis : arguments[1];
+            var origin = (arguments[2] === undefined || ( 2 === arguments.length["-"](1) && arguments[arguments.length["-"](1)] !== null && typeof arguments[arguments.length["-"](1)] === "object" && arguments[arguments.length["-"](1)] [ρσ_kwargs_symbol] === true)) ? rotate.__defaults__.origin : arguments[2];
+            var ρσ_kwargs_obj = arguments[arguments.length["-"](1)];
+            if (ρσ_kwargs_obj === null || typeof ρσ_kwargs_obj !== "object" || ρσ_kwargs_obj [ρσ_kwargs_symbol] !== true) ρσ_kwargs_obj = {};
+            if (Object.prototype.hasOwnProperty.call(ρσ_kwargs_obj, "axis")){
+                axis = ρσ_kwargs_obj.axis;
+            }
+            if (Object.prototype.hasOwnProperty.call(ρσ_kwargs_obj, "origin")){
+                origin = ρσ_kwargs_obj.origin;
+            }
+            var ρσ_ls, rot_origin, ρσ_unpack, i, obj;
+            "68";
+            if (axis === null) {
+                "69";
+                axis = vector(0, 0, 1);
+            }
+            "71";
+            rot_origin = (origin !== null) ? origin : self._origin;
+            "73";
+            var ρσ_Iter3 = enumerate(self.objects);
+            ρσ_Iter3 = ((typeof ρσ_Iter3[Symbol.iterator] === "function") ? (ρσ_Iter3 instanceof Map ? ρσ_Iter3.keys() : ρσ_Iter3) : Object.keys(ρσ_Iter3));
+            for (var ρσ_Index3 of ρσ_Iter3) {
+                ρσ_unpack = ρσ_Index3;
+                i = ρσ_unpack[0];
+                obj = ρσ_unpack[1];
+                "75";
+                ρσ_setitem(self.offsets, i, ρσ_interpolate_kwargs.call(this, rotate, [ρσ_getitem(self.offsets, i)].concat([ρσ_desugar_kwargs({angle: angle, axis: axis})])));
+                "78";
+                obj.pos = rot_origin["+"](ρσ_getitem(self.offsets, i));
+                "81";
+                if ((await hasattr(obj, "rotate"))) {
+                    "82";
+                    ρσ_interpolate_kwargs.call(obj, obj.rotate, [ρσ_desugar_kwargs({angle: angle, axis: axis, origin: rot_origin})]);
+                }
+            }
+        };
+        if (!ObjectGroup.prototype.rotate.__defaults__) Object.defineProperties(ObjectGroup.prototype.rotate, {
+            __defaults__ : {value: {axis:null, origin:null}},
+            __handles_kwarg_interpolation__ : {value: true},
+            __argnames__ : {value: ["angle", "axis", "origin"]},
+            __module__ : {value: null}
+        });
+        ObjectGroup.prototype.__repr__ = async function __repr__() {
+                    return "<"["+"](__name__)["+"](".")["+"](this.constructor.name)["+"](" #")["+"](this.ρσ_object_id)["+"](">");
+        };
+        ObjectGroup.prototype.__str__ = async function __str__() {
+            return this.__repr__();
+        };
+        Object.defineProperty(ObjectGroup.prototype, "__bases__", {value: []});
+        
+        
+        
+        
+        
+        
+    
+        "87";
+        rotation_center = (await v(.5, 0, 0));
+        "90";
+        async function Pulley() {
+            var ρσ_ls, triangle1, triangle2, cyl1, cyl2, cekrk;
+            "91";
+            triangle1 = ρσ_interpolate_kwargs.call(this, pyramid, [ρσ_desugar_kwargs({pos: (await v(0, 1["-u"]()["*"](.2), 0)), axis: (await v(1.5, 0, 0)), height: .2, length: 1, color: color.gray(.4)})]);
+            "92";
+            triangle2 = ρσ_interpolate_kwargs.call(triangle1, triangle1.clone, [ρσ_desugar_kwargs({pos: (await v(0, .2, 0))})]);
+            "93";
+            cyl1 = ρσ_interpolate_kwargs.call(this, cylinder, [ρσ_desugar_kwargs({pos: triangle1.pos["+"]((await v(.9, 1["-u"]()["*"](.1), 0))), axis: (await v(0, .6, 0)), radius: .01})]);
+            "94";
+            cyl2 = ρσ_interpolate_kwargs.call(this, cylinder, [ρσ_desugar_kwargs({pos: (await v(.9, 1["-u"]()["*"](.1), 0)), axis: (await v(0, .2, 0)), radius: .4, color: color.orange})]);
+            "97";
+            cekrk = ρσ_interpolate_kwargs.call(this, compound, [ρσ_list_decorate([ triangle1, triangle2, cyl1, cyl2 ])].concat([ρσ_desugar_kwargs({origin: (await v(0, 0, 0))})]));
+            "98";
+            return cekrk;
+        };
+        if (!Pulley.__module__) Object.defineProperties(Pulley, {
+            __module__ : {value: null}
+        });
+    
+        "102";
+        async function Environment() {
+            var ρσ_ls, earth, wall, _GS_1;
+            "103";
+            earth = ρσ_interpolate_kwargs.call(this, box, [ρσ_desugar_kwargs({pos: (await v(0, 0, 1["-u"]()["*"](.05))), size: (await v(10, 10, .1)), texture: textures.gravel})]);
+            "104";
+            wall = ρσ_interpolate_kwargs.call(this, box, [ρσ_desugar_kwargs({pos: (await v(5.05, 0, 2.5)), size: (await v(.1, 10, 5)), texture: textures.wood})]);
+            "105";
+            _GS_1 = new ObjectGroup;
+            ρσ_interpolate_kwargs.call(_GS_1, _GS_1.__init__, [ρσ_list_decorate([ earth, wall ])].concat([ρσ_desugar_kwargs({origin: (await v(1["-u"]()["*"](5), 1["-u"]()["*"](5), 0))})]));
+            return _GS_1;
+        };
+        if (!Environment.__module__) Object.defineProperties(Environment, {
+            __module__ : {value: null}
+        });
+    
+        "107";
+        async function ArcExtrusion(shape, radius, center, axis, angle) {
+            var ρσ_ls, output;
+            "108";
+            output = ρσ_interpolate_kwargs.call(this, extrusion, [ρσ_desugar_kwargs({path: ρσ_list_decorate(ρσ_interpolate_kwargs.call(paths, paths.arc, [ρσ_desugar_kwargs({radius: radius, angle1: 0, angle2: angle})])), color: color.black, shape: shape})]);
+            "113";
+            output.pos = center;
+            "114";
+            output.up = axis;
+            "115";
+            return output;
+        };
+        if (!ArcExtrusion.__argnames__) Object.defineProperties(ArcExtrusion, {
+            __argnames__ : {value: ["shape", "radius", "center", "axis", "angle"]},
+            __module__ : {value: null}
+        });
+    
+        "124";
+        async function toggle_run_pause(b) {
+            "125";
+            "126";
+            running = !running;
+            "128";
+            b.text = (running) ? "Pause" : "Run";
+        };
+        if (!toggle_run_pause.__argnames__) Object.defineProperties(toggle_run_pause, {
+            __argnames__ : {value: ["b"]},
+            __module__ : {value: null}
+        });
+    
+        "129";
+        async function reset() {
+            "130";
+            "131";
+            (await apparatus.setpos(initial_pos));
+            "132";
+            line1.axis = (await v(1["-u"]()["*"](4.1), 0, 0));
+            "133";
+            line2.axis = (await v(1["-u"]()["*"](3.2), 0, 0));
+            "134";
+            line3.pos = pulley1.pos["+"]((await v(.5, 0, 0)));
+            "135";
+            line3.axis = (await v(0, 0, 1["-u"]()["*"](.5)));
+            "136";
+            smallbox.pos = line3.pos["-"](1["*"]((await v(0, 0, 1))));
+            "137";
+            "138";
+            acceleration = 0;
+            "139";
+            vM = 0;
+            "140";
+            vm = 0;
+        };
+        if (!reset.__module__) Object.defineProperties(reset, {
+            __module__ : {value: null}
+        });
+    
+        "141";
+        async function update_M(s) {
+            "142";
+            "143";
+            try {
+                "144";
+                M = float(s.text);
+                "145";
+                if (M["<="](0)) {
+                    "146";
+                    M = .1;
+                    "147";
+                    s.text = str(M);
+                }
+                "148";
+                status_label.text = "Current values: M = "["+"](ρσ_str.format("{}", M))["+"](" kg, m = ")["+"](ρσ_str.format("{}", m))["+"](" kg, μ = ")["+"](ρσ_str.format("{}", mu))["+"]("");
+                "149";
+                (await reset());
+                "150";
+            } catch (ρσ_Exception) {
+                ρσ_last_exception = ρσ_Exception;
+                if (ρσ_Exception instanceof ValueError) {
+                    "151";
+                    status_label.text = "Please enter a valid number for M";
+                } else {
+                    throw ρσ_Exception;
+                }
+            }
+        };
+        if (!update_M.__argnames__) Object.defineProperties(update_M, {
+            __argnames__ : {value: ["s"]},
+            __module__ : {value: null}
+        });
+    
+        "153";
+        async function update_m(s) {
+            "154";
+            "155";
+            try {
+                "156";
+                m = float(s.text);
+                "157";
+                if (m["<"](0)) {
+                    "158";
+                    m = 0;
+                    "159";
+                    s.text = str(m);
+                }
+                "160";
+                status_label.text = "Current values: M = "["+"](ρσ_str.format("{}", M))["+"](" kg, m = ")["+"](ρσ_str.format("{}", m))["+"](" kg, μ = ")["+"](ρσ_str.format("{}", mu))["+"]("");
+                "161";
+                (await reset());
+                "162";
+            } catch (ρσ_Exception) {
+                ρσ_last_exception = ρσ_Exception;
+                if (ρσ_Exception instanceof ValueError) {
+                    "163";
+                    status_label.text = "Please enter a valid number for m";
+                } else {
+                    throw ρσ_Exception;
+                }
+            }
+        };
+        if (!update_m.__argnames__) Object.defineProperties(update_m, {
+            __argnames__ : {value: ["s"]},
+            __module__ : {value: null}
+        });
+    
+        "165";
+        async function update_mu(s) {
+            "166";
+            "167";
+            try {
+                "168";
+                mu = float(s.text);
+                "169";
+                if (mu["<"](0)) {
+                    "170";
+                    mu = 0;
+                    "171";
+                    s.text = str(mu);
+                }
+                "172";
+                status_label.text = "Current values: M = "["+"](ρσ_str.format("{}", M))["+"](" kg, m = ")["+"](ρσ_str.format("{}", m))["+"](" kg, μ = ")["+"](ρσ_str.format("{}", mu))["+"]("");
+                "173";
+                (await reset());
+                "174";
+            } catch (ρσ_Exception) {
+                ρσ_last_exception = ρσ_Exception;
+                if (ρσ_Exception instanceof ValueError) {
+                    "175";
+                    status_label.text = "Please enter a valid number for μ";
+                } else {
+                    throw ρσ_Exception;
+                }
+            }
+        };
+        if (!update_mu.__argnames__) Object.defineProperties(update_mu, {
+            __argnames__ : {value: ["s"]},
+            __module__ : {value: null}
+        });
+    
+        "177";
+        async function make_caption_layout() {
+            var ρσ_ls, pause_button, M_input, m_input, mu_input, status_label;
+            "179";
+            scene.caption = "<div style='display: flex; width: 100%;'>";
+            "182";
+            scene.caption=scene.caption["+"]("<div style='flex: 1;'>");
+            "183";
+            scene.caption=scene.caption["+"]("<h2>Physics Simulation Controls</h2>");
+            "186";
+            pause_button = ρσ_interpolate_kwargs.call(this, button, [ρσ_desugar_kwargs({text: "Pause", bind: toggle_run_pause})]);
+            "187";
+            ρσ_interpolate_kwargs.call(this, button, [ρσ_desugar_kwargs({text: "Reset", bind: reset})]);
+            "188";
+            scene.append_to_caption("<br><br>");
+            "191";
+            scene.append_to_caption("<b>Big box mass (M):</b> ");
+            (await sleep(.1));
+            "192";
+            M_input = ρσ_interpolate_kwargs.call(this, winput, [ρσ_desugar_kwargs({text: str(M), bind: update_M})]);
+            "193";
+            scene.append_to_caption(" kg<br>");
+            "196";
+            scene.append_to_caption("<b>Small box mass (m):</b> ");
+            (await sleep(.1));
+            "197";
+            m_input = ρσ_interpolate_kwargs.call(this, winput, [ρσ_desugar_kwargs({text: str(m), bind: update_m})]);
+            "198";
+            scene.append_to_caption(" kg<br>");
+            "201";
+            scene.append_to_caption("<b>Friction coefficient (μ):</b> ");
+            (await sleep(.1));
+            "202";
+            mu_input = ρσ_interpolate_kwargs.call(this, winput, [ρσ_desugar_kwargs({text: str(mu), bind: update_mu})]);
+            "203";
+            scene.append_to_caption("<br><br>");
+            "206";
+            status_label = ρσ_interpolate_kwargs.call(this, wtext, [ρσ_desugar_kwargs({text: "Current values: M = "["+"](ρσ_str.format("{}", M))["+"](" kg, m = ")["+"](ρσ_str.format("{}", m))["+"](" kg, μ = ")["+"](ρσ_str.format("{}", mu))["+"]("")})]);
+            "207";
+            scene.append_to_caption("</div>");
+            "210";
+            scene.append_to_caption("<div style='flex: 1;'>");
+            "218";
+            scene.append_to_caption("\n    <h3>Camera Controls:</h3>\n    <ul>\n        <li>W/A/S/D - Move camera up/left/down/right</li>\n        <li>Arrow keys - Rotate camera view</li>\n        <li>Q/E - Roll camera</li>\n    </ul>\n    ");
+            "219";
+            scene.append_to_caption("</div></div>");
+            "221";
+            return [status_label, pause_button];
+        };
+        if (!make_caption_layout.__module__) Object.defineProperties(make_caption_layout, {
+            __module__ : {value: null}
+        });
+    
+        "224";
+        move_step = .5;
+        "225";
+        rotate_step = .1;
+        "226";
+        async function control_camera(evt) {
+            var ρσ_ls, forward, right, up;
+            "227";
+            "230";
+            forward = norm(scene.camera.axis);
+            "231";
+            right = norm(cross(forward, scene.up));
+            "232";
+            up = norm(scene.up);
+            "235";
+            if ((evt.key === "w" || typeof evt.key === "object" && ρσ_equals(evt.key, "w"))) {
+                "236";
+                scene.camera.pos=scene.camera.pos["+"](move_step["*"](up));
+                "237";
+            } else if ((evt.key === "s" || typeof evt.key === "object" && ρσ_equals(evt.key, "s"))) {
+                "238";
+                scene.camera.pos=scene.camera.pos["-"](move_step["*"](up));
+                "239";
+            } else if ((evt.key === "a" || typeof evt.key === "object" && ρσ_equals(evt.key, "a"))) {
+                "240";
+                scene.camera.pos=scene.camera.pos["-"](move_step["*"](right));
+                "241";
+            } else if ((evt.key === "d" || typeof evt.key === "object" && ρσ_equals(evt.key, "d"))) {
+                "242";
+                scene.camera.pos=scene.camera.pos["+"](move_step["*"](right));
+                "246";
+            }
+            if ((evt.key === "down" || typeof evt.key === "object" && ρσ_equals(evt.key, "down"))) {
+                "247";
+                scene.camera.axis = ρσ_interpolate_kwargs.call(this, rotate, [scene.camera.axis].concat([ρσ_desugar_kwargs({angle: 1["-u"]()["*"](rotate_step), axis: right})]));
+                "248";
+                scene.up = ρσ_interpolate_kwargs.call(this, rotate, [scene.up].concat([ρσ_desugar_kwargs({angle: 1["-u"]()["*"](rotate_step), axis: right})]));
+                "249";
+            } else if ((evt.key === "up" || typeof evt.key === "object" && ρσ_equals(evt.key, "up"))) {
+                "250";
+                scene.camera.axis = ρσ_interpolate_kwargs.call(this, rotate, [scene.camera.axis].concat([ρσ_desugar_kwargs({angle: rotate_step, axis: right})]));
+                "251";
+                scene.up = ρσ_interpolate_kwargs.call(this, rotate, [scene.up].concat([ρσ_desugar_kwargs({angle: rotate_step, axis: right})]));
+                "254";
+            } else if ((evt.key === "right" || typeof evt.key === "object" && ρσ_equals(evt.key, "right"))) {
+                "255";
+                scene.camera.axis = ρσ_interpolate_kwargs.call(this, rotate, [scene.camera.axis].concat([ρσ_desugar_kwargs({angle: 1["-u"]()["*"](rotate_step), axis: up})]));
+                "257";
+            } else if ((evt.key === "left" || typeof evt.key === "object" && ρσ_equals(evt.key, "left"))) {
+                "258";
+                scene.camera.axis = ρσ_interpolate_kwargs.call(this, rotate, [scene.camera.axis].concat([ρσ_desugar_kwargs({angle: rotate_step, axis: up})]));
+                "261";
+            }
+            if ((evt.key === "q" || typeof evt.key === "object" && ρσ_equals(evt.key, "q"))) {
+                "262";
+                scene.up = ρσ_interpolate_kwargs.call(this, rotate, [scene.up].concat([ρσ_desugar_kwargs({angle: 1["-u"]()["*"](rotate_step), axis: forward})]));
+                "263";
+            } else if ((evt.key === "e" || typeof evt.key === "object" && ρσ_equals(evt.key, "e"))) {
+                "264";
+                scene.up = ρσ_interpolate_kwargs.call(this, rotate, [scene.up].concat([ρσ_desugar_kwargs({angle: rotate_step, axis: forward})]));
+                "268";
+            }
+        };
+        if (!control_camera.__argnames__) Object.defineProperties(control_camera, {
+            __argnames__ : {value: ["evt"]},
+            __module__ : {value: null}
+        });
+    
+        if ((__name__ === "__main__" || typeof __name__ === "object" && ρσ_equals(__name__, "__main__"))) {
+            "269";
+            scene = ρσ_interpolate_kwargs.call(this, canvas, [ρσ_desugar_kwargs({background: (await v(.6, .6, .6)), width: 800, height: 600})]);
+            "270";
+            scene.bind("keydown", control_camera);
+            "272";
+            scene.lights = ρσ_list_decorate([]);
+            "274";
+            var ρσ_Iter4 = ρσ_list_decorate([ 1["-u"]()["*"](1), 1 ]);
+            ρσ_Iter4 = ((typeof ρσ_Iter4[Symbol.iterator] === "function") ? (ρσ_Iter4 instanceof Map ? ρσ_Iter4.keys() : ρσ_Iter4) : Object.keys(ρσ_Iter4));
+            for (var ρσ_Index4 of ρσ_Iter4) {
+                i = ρσ_Index4;
+                "275";
+                var ρσ_Iter5 = ρσ_list_decorate([ 1["-u"]()["*"](1), 1 ]);
+                ρσ_Iter5 = ((typeof ρσ_Iter5[Symbol.iterator] === "function") ? (ρσ_Iter5 instanceof Map ? ρσ_Iter5.keys() : ρσ_Iter5) : Object.keys(ρσ_Iter5));
+                for (var ρσ_Index5 of ρσ_Iter5) {
+                    j = ρσ_Index5;
+                    "276";
+                    var ρσ_Iter6 = ρσ_list_decorate([ 1["-u"]()["*"](1), 1 ]);
+                    ρσ_Iter6 = ((typeof ρσ_Iter6[Symbol.iterator] === "function") ? (ρσ_Iter6 instanceof Map ? ρσ_Iter6.keys() : ρσ_Iter6) : Object.keys(ρσ_Iter6));
+                    for (var ρσ_Index6 of ρσ_Iter6) {
+                        k = ρσ_Index6;
+                        "277";
+                        ρσ_interpolate_kwargs.call(this, distant_light, [ρσ_desugar_kwargs({direction: (await v(i, j, k)), color: color.white["*"](.3)})]);
+                    }
+                }
+            }
+            "278";
+            scene.caption = "<h2>Physics Simulation Controls</h2>";
+            "280";
+            g = 9.81;
+            "281";
+            dt = .01;
+            "282";
+            M = 100;
+            "283";
+            m = 1;
+            "284";
+            mu = .05;
+            "285";
+            running = true;
+            "286";
+            acceleration = 0;
+            "287";
+            vM = 0;
+            "288";
+            vm = 2["*"](vM);
+            "291";
+            ρσ_unpack = (await make_caption_layout());
+    ρσ_unpack = ρσ_unpack_asarray(2, ρσ_unpack);
+            status_label = ρσ_unpack[0];
+            pause_button = ρσ_unpack[1];
+            "292";
+            scene.append_to_caption("<br><br>");
+            "294";
+            scene.append_to_caption("\n\n");
+            "296";
+            pulley1 = (await Pulley());
+            "298";
+            pulley2 = ρσ_interpolate_kwargs.call(pulley1, pulley1.clone, [ρσ_desugar_kwargs({pos: (await v(5, 0, 4.5))})]);
+            "299";
+            ρσ_interpolate_kwargs.call(pulley2, pulley2.rotate, [ρσ_desugar_kwargs({axis: (await v(0, 0, 1)), angle: pi})]);
+            "300";
+            env = (await Environment());
+            "301";
+            bigbox = ρσ_interpolate_kwargs.call(this, box, [ρσ_desugar_kwargs({pos: (await env.getpos())["+"]((await v(2.5, 5, 2.5))), size: (await v(5, 5, 5)), axis: (await v(1, 0, 0)), texture: textures.granite})]);
+            "302";
+            pulley1.pos = bigbox.pos["+"]((await v(2.5, 0, 1.2)));
+            "303";
+            arc1 = await ρσ_list_decorate(ρσ_interpolate_kwargs.call(this, ArcExtrusion, [ρσ_desugar_kwargs({shape: ρσ_list_decorate(ρσ_interpolate_kwargs.call(shapes, shapes.circle, [ρσ_desugar_kwargs({radius: .01})])), radius: .4, center: pulley1.pos["+"]((await v(.9, 0, 0))), axis: (await v(0, 1, 0)), angle: pi["/"](2)})]));
+            "304";
+            _GS_1 = new ObjectGroup;
+            (await _GS_1.__init__(ρσ_list_decorate([ arc1, bigbox, pulley1 ])));
+            apparatus = _GS_1;
+            "305";
+            arc2 = await ρσ_list_decorate(ρσ_interpolate_kwargs.call(this, ArcExtrusion, [ρσ_desugar_kwargs({shape: ρσ_list_decorate(ρσ_interpolate_kwargs.call(shapes, shapes.circle, [ρσ_desugar_kwargs({radius: .01})])), radius: .4, center: pulley2.pos["-"](1["*"]((await v(.9, 0, 0)))), axis: (await v(0, 1, 0)), angle: pi})]));
+            "306";
+            initial_pos = (await apparatus.getpos());
+            "307";
+            ρσ_interpolate_kwargs.call(arc1, arc1.rotate, [ρσ_desugar_kwargs({angle: pi, axis: (await v(0, 1, 0))})]);
+            "308";
+            ρσ_interpolate_kwargs.call(arc2, arc2.rotate, [ρσ_desugar_kwargs({angle: 1["-u"]()["*"](pi)["/"](2), axis: (await v(0, 1, 0))})]);
+            "309";
+            line1 = ρσ_interpolate_kwargs.call(this, cylinder, [ρσ_desugar_kwargs({pos: pulley2.pos["-"](1["*"]((await v(.9, 0, 1["-u"]()["*"](.4))))), axis: (await v(1["-u"]()["*"](4.1), 0, 0)), radius: .01, color: color.black})]);
+            "310";
+            line2 = ρσ_interpolate_kwargs.call(this, cylinder, [ρσ_desugar_kwargs({pos: pulley2.pos["-"](1["*"]((await v(.9, 0, .4)))), axis: (await v(1["-u"]()["*"](3.6), 0, 0)), radius: .01, color: color.black})]);
+            "311";
+            line3 = ρσ_interpolate_kwargs.call(this, cylinder, [ρσ_desugar_kwargs({pos: pulley1.pos["+"]((await v(.5, 0, 0))), axis: (await v(0, 0, 1["-u"]()["*"](.5))), radius: .01, color: color.black})]);
+            "312";
+            smallbox = ρσ_interpolate_kwargs.call(this, box, [ρσ_desugar_kwargs({pos: line3.pos["-"](1["*"]((await v(0, 0, 1)))), color: color.gray(.2)})]);
+            "313";
+            bigbox_label = ρσ_interpolate_kwargs.call(this, label, [ρσ_desugar_kwargs({pos: bigbox.pos["+"]((await v(0, 0, 2.5))), text: "M = "["+"](ρσ_str.format("{}", M))["+"](" kg"), height: 16, box: false, opacity: 0})]);
+            "314";
+            smallbox_label = ρσ_interpolate_kwargs.call(this, label, [ρσ_desugar_kwargs({pos: smallbox.pos["+"]((await v(0, 0, 1["-u"]()["*"](.5)))), text: "m = "["+"](ρσ_str.format("{}", m))["+"](" kg"), height: 16, box: false, opacity: 0})]);
+            "317";
+            bigbox_vel_label = ρσ_interpolate_kwargs.call(this, label, [ρσ_desugar_kwargs({pos: bigbox.pos["+"]((await v(0, 2, 2.5))), text: "v = 0 m/s", height: 16, box: false, opacity: 0, color: color.red})]);
+            "318";
+            smallbox_vel_label = ρσ_interpolate_kwargs.call(this, label, [ρσ_desugar_kwargs({pos: smallbox.pos["+"]((await v(0, 0, 1["-u"]()["*"](.8)))), text: "v = 0 m/s", height: 16, box: false, opacity: 0, color: color.red})]);
+            "321";
+            while (true) {
+                "322";
+                (await rate(30));
+                "323";
+                if (running) {
+                    "325";
+                    if (smallbox.pos.z[">"](.5)) {
+                        "326";
+                        bigbox_label.text = "M = "["+"](ρσ_str.format("{}", M))["+"](" kg");
+                        "327";
+                        bigbox_label.pos = bigbox.pos["+"]((await v(0, 0, 2.5)));
+                        "329";
+                        smallbox_label.text = "m = "["+"](ρσ_str.format("{}", m))["+"](" kg");
+                        "330";
+                        smallbox_label.pos = smallbox.pos["+"]((await v(0, 0, 1["-u"]()["*"](.5))));
+                        "333";
+                        bigbox_vel_label.text = "v = "["+"](ρσ_str.format("{:.2f}", vM))["+"](" m/s");
+                        "334";
+                        bigbox_vel_label.pos = bigbox.pos["+"]((await v(0, 2, 2.5)));
+                        "336";
+                        smallbox_vel_label.text = "v = "["+"](ρσ_str.format("{:.2f}", vm))["+"](" m/s");
+                        "337";
+                        smallbox_vel_label.pos = smallbox.pos["+"]((await v(0, 0, 1["-u"]()["*"](.8))));
+                        "338";
+                        force = m["*"](g);
+                        "339";
+                        friction = mu["*"](m)["*"](acceleration);
+                        "340";
+                        acceleration = 2["*"](force["-"](1["*"](friction)))["/"](M);
+                        "342";
+                        vM = vM["+"](acceleration["*"](dt));
+                        "343";
+                        vm = 2["*"](vM);
+                        "344";
+                        line3.pos = line3.pos["+"]((await v(vM["*"](dt), 0, 0)));
+                        "345";
+                        line3.axis = line3.axis["-"](1["*"]((await v(0, 0, vm["*"](dt)))));
+                        "346";
+                        line2.axis = line2.axis["+"]((await v(vM["*"](dt), 0, 0)));
+                        "347";
+                        (await apparatus.setpos((await apparatus.getpos())["+"]((await v(vM["*"](dt), 0, 0)))));
+                        "348";
+                        smallbox.pos = smallbox.pos["+"]((await v(vM["*"](dt), 0, 1["-u"]()["*"](vm)["*"](dt))));
+                        "349";
+                    } else {
+                        "350";
+                        (await toggle_run_pause(pause_button));
+                    }
+                }
+            }
+        }
+    };
+    if (!__main__.__module__) Object.defineProperties(__main__, {
+        __module__ : {value: null}
+    });
+    
+    ;$(function(){ window.__context = { glowscript_container: $("#glowscript").removeAttr("id") }; __main__() })})()
+    
+    //--><!]]></script>
+    </div>
