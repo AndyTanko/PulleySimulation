@@ -341,7 +341,8 @@ if __name__ == "__main__":
                 smallbox_vel_label.pos = smallbox.pos + v(0,0,-0.8)
                 force = m*g
                 friction = mu*m*acceleration
-                acceleration = 2*(force-friction)/M
+                tension = force-m*acceleration-friction
+                acceleration = 2*tension/(M+m)
                 # Calculate speeds
                 vM = vM + acceleration*dt
                 vm = 2*vM
